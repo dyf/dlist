@@ -37,7 +37,7 @@ dl.e = [ '1', 2 ] # dlist([{ ..., 'e': '1' }, { ..., 'e': 2 } ])
 
 ## Why didn't you just use `pandas`?
 
-`pandas` wants to aggressively type everything.  I like the flexibility of dictionaries.  I supposed I could `dtype=object` and get most of this, but that felt icky.
+`pandas` wants to aggressively type everything.  I like the flexibility of dictionaries.  I suppose I could `dtype=object` and get most of this, but that felt icky.
 
 ## Why didn't you just use `<mongo/sqlite/tinydb/some-other-thing>`?
 
