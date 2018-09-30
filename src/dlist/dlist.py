@@ -92,9 +92,16 @@ class dlist:
         for item in self._items:
             item[key] = val
         
-    def __sub__(self, key):
-        if isinstance(key, dlmask):
-            return dlist([ self._items[i] for i,tf in enumerate(key) if not tf ])
+    def __sub__(self, other):
+        if isinstance(other, dlmask):
+            return dlist([ self._items[i] for i,tf in enumerate(other) if not tf ])
+
+    def __isub__(self, other):
+        if isinstance(other, dlmask):
+            self._items = [ self._items[i] for i,tf in enumerate(other) if not tf ]
+        return self
+            
+            
 
     
     

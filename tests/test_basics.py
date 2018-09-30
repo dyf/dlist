@@ -56,3 +56,9 @@ def test_case(dl):
 
     print(dl.s.isin(['hi',10],case=True))
     assert np.sum(dl.s.isin(['hi',10],case=False)) == 3
+
+def test_sub(dl):
+    newlen = len(dl - (dl.a == 1))
+    assert newlen == (len(dl) - 1)
+    dl -= (dl.a == 1)
+    assert len(dl) == newlen
