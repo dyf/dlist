@@ -26,10 +26,10 @@ dl.c # [ None, None ]
 dl[dl.a >= 2] # [ { 'a': 2, 'b': 'cat' } ]
 
 # assignment from a properly-sized sequence
-dl.c = [ True, set(1,2) ] # dlist([ { 'a': 1, 'c': True }, { 'a': 2, 'b': 'cat', 'c': set(1,2) } ])
+dl.c = [ True, set([1,2]) ] # dlist([ { 'a': 1, 'c': True }, { 'a': 2, 'b': 'cat', 'c': {1, 2} } ])
 
 # assignment from a non-sequence
-dl.d = 4 # dlist([ { 'a': 1, 'c': True, 'd': 4 }, { 'a': 2, 'b': 'cat', 'c': set(1,2), 'd': 4 } ])
+dl.d = 4 # dlist([ { 'a': 1, 'c': True, 'd': 4 }, { 'a': 2, 'b': 'cat', 'c': {1, 2}, 'd': 4 } ])
 
 # create a new attribute
 dl.e = [ '1', 2 ] # dlist([{ ..., 'e': '1' }, { ..., 'e': 2 } ]) 
