@@ -35,12 +35,10 @@ dl.d = 4 # dlist([ { 'a': 1, 'c': True, 'd': 4 }, { 'a': 2, 'b': 'cat', 'c': set
 dl.e = [ '1', 2 ] # tired of typing, this makes a new attribute
 ```
 
-
-
 ## Why didn't you just use `pandas`?
 
-`pandas` wants to aggressively type everything.  I like the flexibility of dictionaries.  
+`pandas` wants to aggressively type everything.  I like the flexibility of dictionaries.  I supposed I could `dtype=object` and get most of this, but that felt icky.
 
 ## Why didn't you just use `<mongo/sqlite/something>`?
 
-I'm sure something like this already exists.  Making `dlist` sounded fun.
+Sure, something like this probably already exists.  Also, maybe it's not even a good idea.  But it was fun to make.
