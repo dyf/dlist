@@ -38,7 +38,7 @@ dl.e = [ '1', 2 ] # dlist([{ ..., 'e': '1' }, { ..., 'e': 2 } ])
 dl += [ { 'f': 5 } ] # dlist([ {...}, {...}, { 'f': 5 } ]
 
 # subtract using masks
-dl - (dl.a >= 2) # removes elements
+dl -= (dl.a >= 2) 
 ```
 
 ## Why didn't you just use `pandas`?
