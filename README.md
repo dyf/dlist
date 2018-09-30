@@ -32,7 +32,7 @@ dl.c = [ True, set(1,2) ] # dlist([ { 'a': 1, 'c': True }, { 'a': 2, 'b': 'cat',
 dl.d = 4 # dlist([ { 'a': 1, 'c': True, 'd': 4 }, { 'a': 2, 'b': 'cat', 'c': set(1,2), 'd': 4 } ])
 
 # create a new attribute
-dl.e = [ '1', 2 ] # tired of typing, this makes a new attribute
+dl.e = [ '1', 2 ] # dlist([{ ..., 'e': '1' }, { ..., 'e': 2 } ]) 
 ```
 
 ## Why didn't you just use `pandas`?
