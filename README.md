@@ -33,6 +33,12 @@ dl.d = 4 # dlist([ { 'a': 1, 'c': True, 'd': 4 }, { 'a': 2, 'b': 'cat', 'c': {1,
 
 # create a new attribute
 dl.e = [ '1', 2 ] # dlist([{ ..., 'e': '1' }, { ..., 'e': 2 } ]) 
+
+# extend
+dl += [ { 'f': 5 } ] # dlist([ {...}, {...}, { 'f': 5 } ]
+
+# subtract using masks
+dl - (dl.a >= 2) # removes elements
 ```
 
 ## Why didn't you just use `pandas`?
