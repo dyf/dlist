@@ -39,6 +39,6 @@ dl.e = [ '1', 2 ] # dlist([{ ..., 'e': '1' }, { ..., 'e': 2 } ])
 
 `pandas` wants to aggressively type everything.  I like the flexibility of dictionaries.  I supposed I could `dtype=object` and get most of this, but that felt icky.
 
-## Why didn't you just use `<mongo/sqlite/something>`?
+## Why didn't you just use `<mongo/sqlite/tinydb/some-other-thing>`?
 
 Sure, something like this probably already exists.  Also, maybe it's not even a good idea.  But it was fun to make.
