@@ -149,7 +149,7 @@ class dlseries(list):
         if case:
             return self.accept_loop(self, lambda x,y: x in y, v)
         else:
-            return self.accept_loop(self, lambda x,y: x.lower() in y, list(map(lowerish, v)))
+            return self.accept_loop(self, lambda x,y: lowerish(x) in y, list(map(lowerish, v)))
 
     def caseless_eq(self, v):
         return self.accept_loop(self, lambda x,y: x.lower() == y.lower(), v)
@@ -162,44 +162,3 @@ def lowerish(v):
     except:
         return v
     
-if __name__ == "__main__":
-    ld = dlist([{'a':1}, {'b':2}])
-    print("getattr", ld.a)
-    print("str", ld)
-    print("add", ld+{'c':2})
-    print("add", ld + [{'c':2}])
-    ld += [ {'c':3}, {'c':5} ]
-    
-    print("iadd", ld)
-    print("getitem", ld['c'])
-
-    print(ld['c'] > 2)
-    print(ld[ld['c'] > 2])
-    print(ld['c'].isin([3,5]))
-    print(ld[2:4])
-    print(ld[:])
-
-    print(ld - ((ld['c'] > 2) & (ld['c'] < 5)))
-    print(ld[~((ld['c'] > 2) & (ld['c'] < 5))])
-
-    print("attr none", ld.fish)
-    ld['d'] = 4
-    ld['d'] = [1,2,3,4]
-    ld.d = [8,9,7,8]
-    ld.dog = [1,2,3,4]
-    print(ld)
-
-    ld[ld.dog == 4].fish = 10
-    ld[ld.dog == 4]['fish'] = 'yes'
-    print(ld)
-
-    ld.cre = [ 'hi', 'HI', 123, 'Chicken' ]
-
-    print(ld[ld.cre.caseless_eq('Hi')])
-    print(ld[ld.cre.isin(['Hi', 'chicken'],case=False)])
-
-    
-
-
-
-        
