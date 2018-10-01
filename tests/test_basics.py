@@ -13,7 +13,7 @@ def assert_lists_equal(l1, l2):
 def test_get(dl):
     expected = [1, None, None]
 
-    assert_lists_equal(dl['a'], expected)
+    assert_lists_equal(dl('a'), expected)
 
     assert_lists_equal(dl.a, expected)
 
@@ -35,11 +35,11 @@ def test_add(dl):
     assert np.nansum(np.array(dl.c, dtype=float)) == 5
 
 def test_mask(dl):
-    assert np.sum(dl['a']>0) == 1
+    assert np.sum(dl('a')>0) == 1
     assert np.sum(dl.b>2) == 1
     assert np.sum(dl.a.isin([2,3])) == 0
 
-    assert np.sum((dl.b>=2) & (dl['b']<3)) == 1
+    assert np.sum((dl.b>=2) & (dl('b')<3)) == 1
     assert len(dl[dl.a == 1]) == 1
 
 

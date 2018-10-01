@@ -1,1 +1,1 @@
-from dlist.dlist import dlist
+from .dlist import dlist

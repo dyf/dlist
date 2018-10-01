@@ -8,16 +8,20 @@ from dlist import dlist
 # initialize from a list of dicts
 dl = dlist([ { 'a': 1 }, { 'a': 2, 'b': 'cat' } ])
 
+# positional indexing is list-like
+dl[0] # {'a': 1}
+dl[:2] # { 'a': 1 }, { 'a': 2, 'b': 'cat' }
+
 # access keys as attributes or string keys
 dl.a # [ 1, 2 ]
-dl['a'] # ditto
+dl('a') # ditto
 
 # make masks via all the normal operators
-dl['b'] == 'cat' # [ False, True ]
+dl('b') == 'cat' # [ False, True ]
 
 # caseless comparison, since that's nice
-dl['b'].caseless_eq('CAT') # [ False, True ]
-dl['b'].isin([ 1, 'CAT'], case=False) # [ False, True ]
+dl('b').caseless_eq('CAT') # [ False, True ]
+dl('b').isin([ 1, 'CAT'], case=False) # [ False, True ]
 
 # access things that don't exist (possibly a bad idea, but fun)
 dl.c # [ None, None ]

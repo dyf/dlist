@@ -22,13 +22,20 @@ class dlist:
     def __getattr__(self, attr):
         return self._get_simple_attr(attr)
 
-    def __getitem__(self, key):
-        if isinstance(key, dlmask):
-            return dlist([ self._items[i] for i,tf in enumerate(key) if tf ])
-        if isinstance(key, slice):
-            return self._items[key]
+    # [] is for positional indexing
+    def __getitem__(self, other):
+        if isinstance(other, dlmask):
+            return dlist([ self._items[i] for i,tf in enumerate(other) if tf ])
+        elif isinstance(other, slice):
+            return dlist(self._items[other])
+        elif isinstance(other, int):
+            return self._items[other]
         else:
-            return self._get_simple_attr(key)
+            raise TypeError("indices must be integers, slices, or dlmasks, not %s" % type(other))
+
+    # () is for attribute fetching
+    def __call__(self, key):
+        return self._get_simple_attr(key)
 
     def _get_simple_attr(self, attr):
         return dlseries([v.get(attr, self._default) for v in self._items])
@@ -95,10 +102,19 @@ class dlist:
     def __sub__(self, other):
         if isinstance(other, dlmask):
             return dlist([ self._items[i] for i,tf in enumerate(other) if not tf ])
+        elif is_sequence(other):
+            return dlist([ item for item in self._items if (item not in other) ])
+        else:
+            return dlist([ item for item in self._items if item is not other ])
 
     def __isub__(self, other):
         if isinstance(other, dlmask):
             self._items = [ self._items[i] for i,tf in enumerate(other) if not tf ]
+        elif is_sequence(other):
+            self._items = [ item for item in self._items if item not in other ]
+        else:
+            self._items = [ item for item in self._items if item is not other ]
+
         return self
             
             
