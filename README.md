@@ -27,7 +27,7 @@ dl('b').isin([ 1, 'CAT'], case=False) # [ False, True ]
 dl.c # [ None, None ]
 
 # mildly fancy indexing
-dl[dl.a >= 2] # [ { 'a': 2, 'b': 'cat' } ]
+dl[dl.a >= 2] # dlist([ { 'a': 2, 'b': 'cat' } ])
 
 # assignment from a properly-sized sequence
 dl.c = [ True, set([1,2]) ] # dlist([ { 'a': 1, 'c': True }, { 'a': 2, 'b': 'cat', 'c': {1, 2} } ])
