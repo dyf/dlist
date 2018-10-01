@@ -69,6 +69,9 @@ class dlist:
     def __str__(self):
         return str(self._items)
 
+    def __repr__(self):
+        return "dlist(%s)" % str(self)
+
     def __setitem__(self, attr, vals):
         self._set(attr, vals)
 
@@ -116,10 +119,6 @@ class dlist:
             self._items = [ item for item in self._items if item is not other ]
 
         return self
-            
-            
-
-    
     
 def is_sequence(arg):
     return (
@@ -146,7 +145,6 @@ class dlseries(list):
 
         return dlmask(out_items)
 
-    
     def __gt__(self, v):
         return self.accept_loop(self, operator.gt, v)
 
