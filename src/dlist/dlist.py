@@ -20,12 +20,12 @@ class dlist:
         return len(self._items)
     
     def __getattr__(self, attr):
-        return self._get_simple_attr(attr)
+        return self.get(attr)
 
     # [] is for positional indexing
     def __getitem__(self, other):
-        if isinstance(other, dlmask):
-            return dlist([ self._items[i] for i,tf in enumerate(other) if tf ])
+        if isinstance(other, dlmask) or callable(other):
+            return self.where(other)
         elif isinstance(other, slice):
             return dlist(self._items[other])
         elif isinstance(other, int):
@@ -33,12 +33,26 @@ class dlist:
         else:
             raise TypeError("indices must be integers, slices, or dlmasks, not %s" % type(other))
 
+    def where(self, mask_or_cb):
+        if callable(mask_or_cb):
+            mask = dlmask([ mask_or_cb(x) for x in self._items ])
+        else:
+            mask = mask_or_cb
+
+        return dlist([ self._items[i] for i,tf in enumerate(mask) if tf ])
+
     # () is for attribute fetching
     def __call__(self, key):
-        return self._get_simple_attr(key)
+        return self.get(key)
 
-    def _get_simple_attr(self, attr):
-        return dlseries([v.get(attr, self._default) for v in self._items])
+    def get(self, *attrs):
+        nattrs = len(attrs)
+        if nattrs == 1:
+            return dlseries([v.get(attrs[0], self._default) for v in self._items])
+        elif nattrs > 1:
+            return dlist([ { k:item.get(k, self._default) for k in attrs } for item in self._items ])
+        else:
+            raise IndexError("must pass at least one attribute to get")
 
     def _validate(self):
         assert all(isinstance(i, dict) for i in self._items)
@@ -104,9 +118,10 @@ class dlist:
         
     def __sub__(self, other):
         if isinstance(other, dlmask):
-            return dlist([ self._items[i] for i,tf in enumerate(other) if not tf ])
+            # return dlist([ self._items[i] for i,tf in enumerate(other) if not tf ])
+            return self.where(~other)
         elif is_sequence(other):
-            return dlist([ item for item in self._items if (item not in other) ])
+            return dlist([ item for item in self._items if item not in other ])
         else:
             return dlist([ item for item in self._items if item is not other ])
 

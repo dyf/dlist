@@ -4,7 +4,7 @@ import numpy as np
 
 @pytest.fixture()
 def dl():
-    return dlist([{'a':1}, {'b':2}, {'b': 3}])
+    return dlist([{'a':1}, {'b':2}, {'b': 3, 'x':4 }])
 
 def assert_lists_equal(l1, l2):
     assert len(l1) == len(l2)
@@ -54,7 +54,6 @@ def test_case(dl):
     assert np.sum(dl.s.caseless_eq('HI')) == 2
     assert np.sum(dl.s.isin(['hi',10])) == 2
 
-    print(dl.s.isin(['hi',10],case=True))
     assert np.sum(dl.s.isin(['hi',10],case=False)) == 3
 
 def test_sub(dl):
@@ -62,3 +61,13 @@ def test_sub(dl):
     assert newlen == (len(dl) - 1)
     dl -= (dl.a == 1)
     assert len(dl) == newlen
+
+def test_get(dl):
+    gdl = dl.get('b','x')
+
+    assert len(gdl) == 3
+    assert 'a' not in gdl[0]
+    assert all('x' in item for item in gdl)
+    assert all('b' in item for item in gdl)
+    
+    
