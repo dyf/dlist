@@ -26,13 +26,16 @@ def test_str(dl):
 
 def test_add(dl):
     old_len = len(dl)
-    dl = dl + {'c': 2}
+    dl = dl + [{'c': 2}]
     assert len(dl) == old_len+1
 
-    dl += {'c': 3}
+    dl += [{'c': 3}]
     assert len(dl) == old_len+2
 
-    assert np.nansum(np.array(dl.c, dtype=float)) == 5
+    dl.append({'c': 3})
+    assert len(dl) == old_len+3
+
+    assert np.nansum(np.array(dl.c, dtype=float)) == 8
 
 def test_mask(dl):
     assert np.sum(dl('a')>0) == 1
@@ -69,5 +72,37 @@ def test_get(dl):
     assert 'a' not in gdl[0]
     assert all('x' in item for item in gdl)
     assert all('b' in item for item in gdl)
+    
+    
+def test_apply(dl):
+    gdl = dl.apply(lambda x: {})
+    assert all(len(item) == 0 for item in gdl)
+
+    with pytest.raises(KeyError):
+        gdl = dl.apply(lambda x: x['hi'], reraise=True)
+
+    gdl = dl.apply(lambda x: { 'a': x['a'] }, reraise=False)
+    for d,gd in zip(dl, gdl):
+        if 'a' in d:
+            assert gd['a'] == d['a']
+        else:
+            assert len(gd) == 0
+            
+
+def test_kapply(dl):
+    gdl = dl.kapply(a=lambda a: "HIHI")
+    assert all(gdl.a == "HIHI")
+
+    gdl = dl.kapply(a=lambda a: a+1, b=lambda b: b-1)
+
+    for d,gd in zip(dl, gdl):
+        if 'a' in d:
+            assert gd['a'] == d['a']+1
+        if 'b' in d:
+            assert gd['b'] == d['b']-1
+
+
+
+    
     
     

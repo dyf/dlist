@@ -1,5 +1,6 @@
+
 import numpy as np
-import uuid
+import copy
 import operator
 
 class dlist:
@@ -7,14 +8,12 @@ class dlist:
     def __init__(self, items, default=None):
         self._items = list(items)
         self._default = default
-        self._attrs = set()
         
-        self.reindex()
-
-    def reindex(self):
-        self._attrs = set()
+    def attrs(self):
+        attrs = set()
         for item in self._items:
-            self._attrs.update(item.keys())
+            attrs.update(item.keys())
+        return attrs
 
     def __len__(self):
         return len(self._items)
@@ -56,26 +55,30 @@ class dlist:
 
     def _validate(self):
         assert all(isinstance(i, dict) for i in self._items)
+
+    def append(self, d):
+        if isinstance(d, dict):
+            self._items.append(d)
+        else:
+            raise TypeError("Can only append dict (not %s)" % type(d))
         
     def __iadd__(self, other):
-        if isinstance(other, dict):
-            self._items.append(other)
-        elif isinstance(other, list):
+        if isinstance(other, list):
             self._items += other
         elif isinstance(other, dlist):
             self._items += other.items
-
-        self.reindex()
+        else:
+            raise TypeError("cannot append object of type %s" % type(other))
 
         return self
 
     def __add__(self, other):
-        if isinstance(other, dict):
-            return dlist(self._items + [other])
-        elif isinstance(other, list):
+        if isinstance(other, list):
             return dlist(self._items + other)
         elif isinstance(other, dlist):
             return dlist(self._items + other.items)
+        else:
+            raise TypeError("cannot append object of type %s" % type(other))
 
     def __contains__(self, other):
         return other in self._items
@@ -96,7 +99,6 @@ class dlist:
         else:
             # external attrs are treated as dict keys
             self._set(attr, vals)
-            self.reindex()
         
     def _set(self, key, vals):
         if is_sequence(vals):
@@ -134,7 +136,39 @@ class dlist:
             self._items = [ item for item in self._items if item is not other ]
 
         return self
-    
+
+    def apply(self, fn, reraise=False):
+        out = dlist([])
+
+        for item in self:
+            try:
+                out_item = fn(item)
+            except:
+                if reraise:
+                    raise
+                else:
+                    out_item = {}
+
+            out.append(out_item)
+            
+        return out
+
+    def kapply(self, **kwargs):
+        out = dlist([])
+        for item in self:
+            item = copy.deepcopy(item)
+
+            for k,fn in kwargs.items():
+                try:
+                    item[k] = fn(item.get(k, self._default))
+                except:
+                    pass
+
+            out.append(item)
+
+        return out
+            
+                
 def is_sequence(arg):
     return (
         not hasattr(arg, "strip") and
